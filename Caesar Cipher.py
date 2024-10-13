@@ -1,52 +1,50 @@
+def caesar(letter, shift, cipher_direction):
+    converted_code = ""
 
-def encryption(letter, shift):
-    encrypted_code = ""
-    for x in letter:
-        ascii_values.append(ord(x))
-    
-    for x in range(len(ascii_values)):
-        if ascii_values[x] == 32:
-            ascii_values[x] = " "
+    for x in range(len(letter)):
         
-        elif ascii_values[x] + shift > 122:
-            ascii_values[x] = chr((ascii_values[x] + shift) - 26)
+        if letter[x].isalpha():
             
+            if cipher_direction == "encode":
+                if letter[x].islower():
+                    if ord(letter[x]) + shift > 122:
+                        converted_code += chr(ord(letter[x]) + shift - 26)
+                    else:
+                        converted_code += chr(ord(letter[x]) + shift)
+                else:
+                    
+                    if ord(letter[x]) + shift > 90:
+                        converted_code += chr(ord(letter[x]) + shift - 26)
+                    else:
+                        converted_code += chr(ord(letter[x]) + shift)    
+                        
+            else: 
+                if letter[x].islower():
+                    if ord(letter[x]) - shift < 97:
+                        converted_code += chr(ord(letter[x]) - shift + 26)
+                    else:
+                        converted_code += chr(ord(letter[x]) - shift)
+                        
+                else:
+                    if ord(letter[x]) - shift < 65:
+                        converted_code += chr(ord(letter[x]) - shift + 26)
+                    else:
+                        converted_code += chr(ord(letter[x]) - shift)
+                        
         else:
-            ascii_values[x] = chr(ascii_values[x] + shift)
-    
-        encrypted_code += ascii_values[x]
-    print(encrypted_code)
-
-def decryption(letter, shift):
-    decrypted_code = ""
-    for x in letter:
-        ascii_values.append(ord(x))
-    
-    for x in range(len(ascii_values)):
-        if ascii_values[x] == 32:
-            ascii_values[x] = " "
-                
-        elif ascii_values[x] - shift < 97:
-            ascii_values[x] = chr((ascii_values[x] - shift) + 26)
-            
-        else:
-            ascii_values[x] = chr(ascii_values[x] - shift)
-    
-        decrypted_code += ascii_values[x]
-    print(decrypted_code)
-
+            converted_code += letter[x]
+    print(f"Your {cipher_direction}d text is {converted_code}")
 
 continuation = "yes"
 while continuation == "yes":
     direction = input("Type 'encode' to encrypt, type 'decode' to decrypt: \n").lower()
-    string_input = input("Input a string: ").lower()
-    shift_number = int(input("Input a shift number: "))
+    while direction not in ['decode', 'encode']:
+        direction = input("Incorrect input. Please enter either 'encode' or 'decode': ").lower()
+    string_input = input("Input a string: ")
+    shift_number = int(input("Input a shift number: ")) % 26
     
-    ascii_values = []
-    
-    if direction == "encode":
-        encryption(string_input, shift_number)
-    else:
-        decryption(string_input, shift_number)
+    caesar(string_input, shift_number, direction)
     
     continuation = str(input("Would you like to continue? Enter 'Yes' or 'No': ")).lower()
+    
+    
